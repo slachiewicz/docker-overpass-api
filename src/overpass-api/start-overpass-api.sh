@@ -1,19 +1,23 @@
 #!/bin/bash
 set -e
 
-su - overpass_user -c "cd /srv && bin/dispatcher --osm-base --db-dir=/srv/db --meta &"
+echo "### Starting Overpass ###"
 
-service apache2 start
+su - overpass_user -c "cd /home/overpass_user/ && bin/dispatcher --osm-base --db-dir=/home/overpass_user/overpass/db --meta &"
 
-wget --output-document=test1.xml http://localhost:80
+service apache2 restart
+
+wget --output-document=test1.xml http://localhost
 
 cat test1.xml
 
-#wget --output-document=test2.xml http://localhost:80/api/interpreter?data=%3Cprint%20mode=%22body%22/%3E
+wget --output-document=test2.xml http://localhost/api/interpreter?data=%3Cprint%20mode=%22body%22/%3E
 
-#cat test2.xml
+cat test2.xml
 
-sleep 100000
+echo "### Done starting up! ###"
+
+tail -f /var/log/apache2/error.log
 
 
 
