@@ -1,4 +1,5 @@
-This is a containers overpass API.
+
+This is a containerized overpass API!
 
 All you need to do is put the desired osm.bz2 in srv/overpass-api/import and then run:
 
