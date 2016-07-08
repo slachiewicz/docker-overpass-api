@@ -3,21 +3,20 @@ set -e
 
 echo "### Starting Overpass ###"
 
-su - overpass_user -c "cd /home/overpass_user/ && bin/dispatcher --osm-base --db-dir=/home/overpass_user/overpass/db --meta &"
+service apache2 start
 
-service apache2 restart
+cd /srv && nohup bin/dispatcher --osm-base --db-dir=/srv/db --meta &
 
-wget --output-document=test1.xml http://localhost
+echo "Testing over Monaco, you should get some result unless you've imported a different area"
 
-cat test1.xml
-
-wget --output-document=test2.xml http://localhost/api/interpreter?data=%3Cprint%20mode=%22body%22/%3E
-
-cat test2.xml
+curl 'http://localhost:80/api/interpreter?data=%5Btimeout%3A10%5D%5Bout%3Ajson%5D%3B(node(around%3A10%2C43.73991%2C7.42496)%3Bway(around%3A10%2C43.73991%2C7.42496))%3Bout+tags+geom(43.73760021380981%2C7.424295544624329%2C43.74103994517888%2C7.425419390201569)%3Brelation(around%3A10%2C43.73991%2C7.42496)%3Bout+geom(43.73760021380981%2C7.424295544624329%2C43.74103994517888%2C7.425419390201569)%3B'
 
 echo "### Done starting up! ###"
 
-tail -f /var/log/apache2/error.log
+echo "Tailing access.log"
+
+tail -f /var/log/apache2/access.log
+
 
 
 
