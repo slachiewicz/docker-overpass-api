@@ -1,6 +1,4 @@
 overpass-api:
   build: "src/overpass-api"
-  volumes:
-   - ./import:/data/import
   ports:
    - "80"
