@@ -1,4 +1,0 @@
-overpass-api:
-  build: "src/overpass-api"
-  ports:
-   - "80"
