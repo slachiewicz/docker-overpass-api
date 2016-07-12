@@ -2,9 +2,11 @@
 
 This is a containerized overpass API!
 
-All you need to do is put the desired osm.bz2 in srv/overpass-api/import and then run:
+All you need to do is run:
 
-docker-compose build overpass-api; docker-compose up -d overpass-api; docker ps -a (to get the port number)
+ docker build --build-arg DOWNLOAD_URL=http://download.geofabrik.de/north-america/greenland-latest.osm.bz2 .
+
+to build the image. If you do not specifiy a DOWNLOAD_URL, it will download the planet.osm.bz2 by default
 
 This way, it can be deployed anywhere, and you're able to load balance across multiple instances
 
