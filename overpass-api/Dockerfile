@@ -38,15 +38,7 @@ RUN cp /usr/src/app/000-default.conf /etc/apache2/sites-available/000-default.co
 ARG DOWNLOAD_URL="http://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/planet/planet-latest.osm.bz2"
 ENV DOWNLOAD_URL ${DOWNLOAD_URL}
 
-RUN wget $DOWNLOAD_URL -O /import.osm.bz2
-
-RUN cd /srv/ && chown -R www-data:www-data *
-
-RUN cd /srv/ && bash bin/init_osm3s.sh /import.osm.bz2 /srv/db ./ --meta
-
-RUN chmod -R 755 /var/www/html && chown -R www-data:www-data /var/www/html
-
-RUN rm /import.osm.bz2
+RUN wget $DOWNLOAD_URL -O /import.osm.bz2 && cd /srv/ && chown -R www-data:www-data * && cd /srv/ && bash bin/init_osm3s.sh /import.osm.bz2 /srv/db ./ --meta && chmod -R 755 /var/www/html && chown -R www-data:www-data /var/www/html && rm /import.osm.bz2
 
 EXPOSE 80
 
