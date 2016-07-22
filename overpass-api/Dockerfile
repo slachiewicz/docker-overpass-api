@@ -1,27 +1,15 @@
-FROM ubuntu:14.04
-MAINTAINER thomas.kalka@gmail.com
+FROM ubuntu:16.04
+MAINTAINER slachiewicz@gmail.com
+# http://wiki.openstreetmap.org/wiki/Overpass_API/Installation
 
-RUN apt-get update && apt-get install -y \
-  autoconf \ 
-  automake1.11 \
-  wget \
-  curl \
-  expat \
-  g++ \
-  libtool \
-  libexpat1-dev \ 
-  make \
-  zlib1g-dev \
-  apache2 \
-  curl \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y g++ make expat libexpat1-dev zlib1g-dev
+#build-essential autoconf automake  expat libtool libexpat1-dev zlib1g-dev apache2
 
-RUN mkdir /srv/build && cd /srv/build && \
-wget http://dev.overpass-api.de/releases/osm-3s_v0.7.52.tar.gz && tar -zxvf osm-3s_v0.7.52.tar.gz && \
-cd osm-3s_v0.7.52 && ./configure CXXFLAGS="-O3" --prefix=/srv && make install -j 4
+RUN mkdir /app/build && cd /app/build && \
+git clone -b test755 https://github.com/mmd-osm/Overpass-API.git && cd Overpass-API \
+&& ./configure CXXFLAGS="-O3" --prefix=/app && make install -j 4
 
-RUN cd /srv/build && \
+RUN cd /app/build && \
 wget http://dev.overpass-api.de/releases/osm-3s_v0.7.52_html.tar.gz && \
 tar -zxvf osm-3s_v0.7.52_html.tar.gz && \
 cd osm-3s_v0.7.52/html && cp -R * /var/www/html/
